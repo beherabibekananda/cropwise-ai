@@ -9,12 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HistoryRouteImport } from './routes/history'
 import { Route as DetectionRouteImport } from './routes/detection'
+import { Route as AgronomistRouteImport } from './routes/agronomist'
 import { Route as IndexRouteImport } from './routes/index'
 
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DetectionRoute = DetectionRouteImport.update({
   id: '/detection',
   path: '/detection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgronomistRoute = AgronomistRouteImport.update({
+  id: '/agronomist',
+  path: '/agronomist',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +37,59 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agronomist': typeof AgronomistRoute
   '/detection': typeof DetectionRoute
+  '/history': typeof HistoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agronomist': typeof AgronomistRoute
   '/detection': typeof DetectionRoute
+  '/history': typeof HistoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agronomist': typeof AgronomistRoute
   '/detection': typeof DetectionRoute
+  '/history': typeof HistoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/detection'
+  fullPaths: '/' | '/agronomist' | '/detection' | '/history'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/detection'
-  id: '__root__' | '/' | '/detection'
+  to: '/' | '/agronomist' | '/detection' | '/history'
+  id: '__root__' | '/' | '/agronomist' | '/detection' | '/history'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgronomistRoute: typeof AgronomistRoute
   DetectionRoute: typeof DetectionRoute
+  HistoryRoute: typeof HistoryRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/detection': {
       id: '/detection'
       path: '/detection'
       fullPath: '/detection'
       preLoaderRoute: typeof DetectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agronomist': {
+      id: '/agronomist'
+      path: '/agronomist'
+      fullPath: '/agronomist'
+      preLoaderRoute: typeof AgronomistRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,7 +104,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgronomistRoute: AgronomistRoute,
   DetectionRoute: DetectionRoute,
+  HistoryRoute: HistoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
