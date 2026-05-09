@@ -9,11 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeatherRouteImport } from './routes/weather'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as DetectionRouteImport } from './routes/detection'
 import { Route as AgronomistRouteImport } from './routes/agronomist'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -40,12 +58,18 @@ export interface FileRoutesByFullPath {
   '/agronomist': typeof AgronomistRoute
   '/detection': typeof DetectionRoute
   '/history': typeof HistoryRoute
+  '/insights': typeof InsightsRoute
+  '/settings': typeof SettingsRoute
+  '/weather': typeof WeatherRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agronomist': typeof AgronomistRoute
   '/detection': typeof DetectionRoute
   '/history': typeof HistoryRoute
+  '/insights': typeof InsightsRoute
+  '/settings': typeof SettingsRoute
+  '/weather': typeof WeatherRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +77,38 @@ export interface FileRoutesById {
   '/agronomist': typeof AgronomistRoute
   '/detection': typeof DetectionRoute
   '/history': typeof HistoryRoute
+  '/insights': typeof InsightsRoute
+  '/settings': typeof SettingsRoute
+  '/weather': typeof WeatherRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/agronomist' | '/detection' | '/history'
+  fullPaths:
+    | '/'
+    | '/agronomist'
+    | '/detection'
+    | '/history'
+    | '/insights'
+    | '/settings'
+    | '/weather'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/agronomist' | '/detection' | '/history'
-  id: '__root__' | '/' | '/agronomist' | '/detection' | '/history'
+  to:
+    | '/'
+    | '/agronomist'
+    | '/detection'
+    | '/history'
+    | '/insights'
+    | '/settings'
+    | '/weather'
+  id:
+    | '__root__'
+    | '/'
+    | '/agronomist'
+    | '/detection'
+    | '/history'
+    | '/insights'
+    | '/settings'
+    | '/weather'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,10 +116,34 @@ export interface RootRouteChildren {
   AgronomistRoute: typeof AgronomistRoute
   DetectionRoute: typeof DetectionRoute
   HistoryRoute: typeof HistoryRoute
+  InsightsRoute: typeof InsightsRoute
+  SettingsRoute: typeof SettingsRoute
+  WeatherRoute: typeof WeatherRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/history': {
       id: '/history'
       path: '/history'
@@ -107,6 +180,9 @@ const rootRouteChildren: RootRouteChildren = {
   AgronomistRoute: AgronomistRoute,
   DetectionRoute: DetectionRoute,
   HistoryRoute: HistoryRoute,
+  InsightsRoute: InsightsRoute,
+  SettingsRoute: SettingsRoute,
+  WeatherRoute: WeatherRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
